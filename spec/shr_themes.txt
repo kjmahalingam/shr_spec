@@ -1,0 +1,68 @@
+Grammar:	DataElement 5.0
+Namespace:	shr.themes
+Description:	"Implementation of the HL7 Domain Analysis Model: Terminology Harmonization in Exercise Medicine and Exercise Science (THEMES), Release 1 Domain Analysis Model (May, 2017)."
+Uses:  			shr.core, shr.base, shr.actor, shr.device, shr.condition, shr.observation, shr.lab, shr.procedure
+
+
+CodeSystem:     LNC = http://loinc.org
+CodeSystem:     SCT = http://snomed.info/sct
+CodeSystem:     MTH = http://ncimeta.nci.nih.gov
+CodeSystem:     UCUM = http://unitsofmeasure.org
+
+
+EntryElement: CardioPulmonaryExerciseTestResult
+Based on:	  Panel
+PanelMembers.Observation includes 0..* ref(GasExchangeMeasurement)
+
+EntryElement:	GasExchangeMeasurement
+Based on:		Observation
+Value:			Quantity
+1..1			SpecificType from GasExchangeMeasurementTypeVS
+0..1			AverageInterval
+0..1			AverageTimePeriodAmount
+0..1			AveragingMethod
+
+
+Element:		AverageInterval
+Description:	"The interval of time used for gas exchange measurement averages. Expressed in seconds."
+Value:			Quantity with units UCUM#s
+
+Element:		AverageTimePeriodAmount
+Description:	"The average time for the gas exchange measurement. Expressed in seconds."
+Value:			Quantity with units UCUM#s
+
+Element:		AveragingMethod
+Description:	"The methodology used for deriving gas measurement averages (e.g., rolling average, 10 second average)."
+Value:			CodeableConcept from AveragingMethodVS
+
+
+EntryElement:	CarbonDioxideOutput
+Based on:		GasExchangeMeasurement
+Description:	"The amount of carbon dioxide (CO2) exhaled from the body into the atmosphere per unit time, expressed in milliliters or liters per minute (mL/min or L/min), standard temperature and pressure dry (STPD)."
+Value:			Quantity with units UCUM#L/min
+SpecificType is LNC#19889-5
+
+EntryElement:	MinuteVentilation
+Based on:		GasExchangeMeasurement
+Description:	"The volume of air exhaled from the body in one minute expressed in liters per minute. This is conventionally expressed at body temperature, saturated with water at atmospheric pressure body temperature and pressure saturated (BTPS). The  total volume of breath exhaled per unit time, should include the volume of the volume of the breathing apparatus used in its measurement. Note, however, that when calculating the ventilatory equivalelnt for slopes involving ventilation, the V̇E value should exclude the deadspace volume of the berathing apparatus."
+Value:			Quantity with units UCUM#L/min
+SpecificType is LNC#75959-7
+
+EntryElement:		OxygenConsumption
+Based on:		GasExchangeMeasurement
+Description:	"Rate of oxygen (O2) utilized in metabolic processes expressed in milliliters or liters per minute (mL/min or L/min)."
+Value:			Quantity with units UCUM#L/min	
+SpecificType is LNC#60842-2		
+
+
+EntryElement:	OxygenUptake
+Based on:		GasExchangeMeasurement
+Description:	"The amount of oxygen (O2) extracted from the inspired gas in each period, expressed in milliliters or liters per minute (mL/min or L/min), standard temperature and pressure dry (STPD)"
+Value:			Quantity with units UCUM#L/min
+SpecificType is LNC#222222	
+
+EntryElement:	RespiratoryRate
+Based on:		GasExchangeMeasurement
+Description:	"Number of breaths per minute"
+Value:			Quantity with units UCUM#1/min
+SpecificType is LNC#555555	

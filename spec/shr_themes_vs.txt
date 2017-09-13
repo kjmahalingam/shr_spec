@@ -1,0 +1,19 @@
+Grammar:	ValueSet 5.0
+Namespace:	 shr.themes
+
+CodeSystem:     LNC = http://loinc.org
+
+ValueSet: 		GasExchangeMeasurementTypeVS
+LNC#19889-5		"Carbon Dioxide Output (V̇CO2)"
+LNC#75959-7		"Minute Ventilation (V̇E)"
+LNC#60842-2 	"Oxygen Consumption (V̇O2)"
+LNC#222222		"Oxygen Uptake (V̇O2)"
+LNC#333333 		"Peak or maximal V̇O2 achieved"
+LNC#444444 		"Peak Oxygen Uptake (Peak V̇O2)"
+LNC#555555		"Respiratory rate"
+LNC#666666		"VO2 Max"
+
+ValueSet:		AveragingMethodVS
+#rolling		"Rolling average"
+#10_sec			"10-Second average"
+#60_sec			"1 minute average"
