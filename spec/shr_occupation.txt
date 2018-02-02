@@ -1,0 +1,69 @@
+Grammar:		DataElement 5.0
+Namespace:		shr.occupation
+Description:	"Patient’s or family member's work information."
+Uses:  			shr.core, shr.base, shr.finding, shr.action, shr.entity
+
+CodeSystem:     LNC = http://loinc.org
+
+EntryElement:	EmploymentStatus
+Based on:		Observation
+Concept:		LNC#74165-2
+Description:	"Employment status."
+Value:			CodeableConcept
+				ObservationCode is LNC#74165-2
+
+EntryElement:	RetirementStatus
+Based on:		Observation
+Concept:		LNC#87510-4
+Description:	"Retirement status."
+Value:			CodeableConcept
+1..1			OccurrenceTimeOrPeriod
+				ObservationCode is LNC#87510-4
+
+EntryElement:	CombatZoneHazardousDuty
+Based on:		Observation
+Concept:		LNC#87511-2
+Description:	"Combat Zone Hazardous Duty."
+Value:			CodeableConcept
+				ObservationCode is LNC#87511-2
+1..1			OccurrenceTimeOrPeriod				
+
+EntryElement:	UsualOccupation
+Based on:		Observation
+Concept:		LNC#21843-8
+Description:	"Usual occupation"
+Value:			CodeableConcept from http://hl7.org/fhir/ValueSet/occupation-cdc-census-2010
+1..1			OccurrenceTimeOrPeriod
+0..1 			OccupationIndustry	
+				
+EntryElement:	Job
+Based on:		Observation
+Concept:		LNC#21843-8
+Description:	"Past or present job."
+1..1			Occupation
+1..1			Industry
+1..1			OccurrenceTimeOrPeriod
+				ObservationComponent
+0..1 			OccupationIndustry
+				
+	Element:		Occupation
+	Concept:		LNC#21843-8
+	Description:	"A person's work or business"
+	Value:			CodeableConcept should be from http://hl7.org/fhir/ValueSet/occupation-cdc-census-2010
+	
+	Element:		Industry
+	Concept:		TBD
+	Description:	"A particular form or branch of economic or commercial activity."
+	Value:			CodeableConcept should be from http://hl7.org/fhir/ValueSet/industry-cdc-census-2010
+				
+EntryElement:		
+Based on:		
+Concept:		
+Description:	""
+Value:			
+
+Element:		
+Based on:		
+Concept:		
+Description:	""
+Value:			
