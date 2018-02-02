@@ -5,7 +5,7 @@ Uses:  			shr.core, shr.base, shr.finding, shr.action, shr.entity
 
 CodeSystem:     LNC = http://loinc.org
 
-EntryElement:	EmploymentStatus
+EntryElement:	EmploymentStatus  
 Based on:		Observation
 Concept:		LNC#74165-2
 Description:	"Employment status."
@@ -43,8 +43,7 @@ Description:	"Past or present job."
 1..1			Occupation
 1..1			Industry
 1..1			OccurrenceTimeOrPeriod
-				ObservationComponent
-0..1 			OccupationIndustry
+0..1			Employer
 				
 	Element:		Occupation
 	Concept:		LNC#21843-8
@@ -55,6 +54,10 @@ Description:	"Past or present job."
 	Concept:		TBD
 	Description:	"A particular form or branch of economic or commercial activity."
 	Value:			CodeableConcept should be from http://hl7.org/fhir/ValueSet/industry-cdc-census-2010
+	
+	Element:		Employer
+	Concept:		TBD
+	Description:	""
 				
 EntryElement:		
 Based on:		

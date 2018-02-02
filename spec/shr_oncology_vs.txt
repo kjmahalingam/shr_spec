@@ -21,6 +21,10 @@ Includes codes descending from SCT#126926005 "Neoplasm of the breast (disorder)"
 ValueSet:		ReceptorVS
 Includes codes descending from SCT#116647005 "Receptor (substance)"
 
+ValueSet:		OncotypeDXBreastVS
+Description:	"Values for OncotypeDX breast cancer."
+
+
 ValueSet:		StainingIntensityVS
 Description:	"Part of the Allred scoring, based on the intensity of that staining, on a scale of 0 (Negative) to 3 (Strong)."
 CAP#29915		"None/Negative"
