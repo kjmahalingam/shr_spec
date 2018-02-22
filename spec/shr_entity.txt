@@ -139,14 +139,14 @@ Concept: 		MTH#C1299487
 Description:	"A person in the role of a patient, including extended demographic information about the subject of this health record."
 				Value is type ref(Person)
 0..*			MedicalRecordNumber
-1..1			PlaceOfBirth
+0..1			PlaceOfBirth
 0..1			MultipleBirth
-1..1			BirthSex
-1..1		 	Race
-1..1		 	Ethnicity
-1..1		 	MaritalStatus
-1..1			MothersMaidenName
-1..1			FathersName
+0..1			BirthSex
+0..1		 	Race
+0..1		 	Ethnicity
+0..1		 	MaritalStatus
+0..1			MothersMaidenName
+0..1			FathersName
 0..1			SocialSecurityNumber
 0..1			DriversLicenseNumber
 0..*			PassportNumber
