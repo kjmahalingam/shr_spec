@@ -5,6 +5,7 @@ Uses:			shr.core, shr.base, shr.finding, shr.action, shr.procedure, shr.medicati
 
 Path:     	FHIR = http://hl7.org/fhir/ValueSet
 
+CodeSystem:     FHIRID = http://hl7.org/fhir/v2/0203
 
 Abstract Element:	Party
 Based on:			Content
@@ -137,6 +138,7 @@ Based on:		Role
 Concept: 		MTH#C1299487
 Description:	"A person in the role of a patient, including extended demographic information about the subject of this health record."
 				Value is type ref(Person)
+0..*			MedicalRecordNumber
 1..1			PlaceOfBirth
 0..1			MultipleBirth
 1..1			BirthSex
@@ -150,6 +152,12 @@ Description:	"A person in the role of a patient, including extended demographic 
 0..*			PassportNumber
 0..1			MedicalInterpreterNeeded
 0..1			Deceased
+
+	Element:   		MedicalRecordNumber
+	Based on:		Identifier
+	Concept:        TBD
+	Description:    "A unique identifier as provided by a health care organiztion"
+	Type.CodeableConcept is FHIRID#MR
 
 	Element:   		PlaceOfBirth
 	Concept:        MTH#C0032040
