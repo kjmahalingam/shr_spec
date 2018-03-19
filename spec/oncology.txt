@@ -32,10 +32,10 @@ Description:	"Specimen resulting from biopsy or excision of breast and surroundi
 				Type from BreastSpecimenTypeVS
 				CollectionSite value is type BreastSite
 				CollectionMethod from BreastSpecimenCollectionMethodVS
-				SourceSpecimen value is type BreastSpecimen
-0..1			ColdIschemicTime
+				SourceSpecimen value is type BreastSpecimen //RMB: redundant reference here?
+0..1			ColdIschemiaTime //RMB CAP form discusses cold ischemia time, not ischemic time
 
-		Element:	 	ColdIschemicTime
+		Element:	 	ColdIschemiaTime
 		Description:	"The time between the chilling of a tissue or tissue sample and the time it is warmed. 
 		NOTE: In CIMI Version 0.0.4, processing of a specimen is represented as an independent clinical statement involving a SpecimenProcessingTopic and PerformanceContext. The CIMI clinical statement would be mapped to FHIR as a Procedure. In this case, the procedure involves chilling the specimen (the key or code) and the duration of that procedure (corresponding to PerformanceContext.duration) would be interpreted as the cold ischemic time. The drawback of this would be that the information on cold ischemic time (necessary for interpreting results) would not travel with the specimen. To provide a cutpoint between this IG and the rest of CIMI, and to avoid unnecessary complexity, an extension was introduced."
 		Value:			Quantity with units UCUM#min
@@ -74,12 +74,12 @@ EntryElement:	BreastCancerTNMStage
 Based on:		EvaluationResultRecorded  // maps to FHIR Observation
 Concept:		LNC#21908-9
 Description:	"The stage of a cancer, assessed according to the standard established by American Joint Committee on Cancer (AJCC). TNM Stage Grouping categorizes the progression of cancer using a modified Roman Numeral system."
-Value:			CodeableConcept from BreastCancerStageVS  // could be normative answer group LNC#LL240-3
+Value:			CodeableConcept from BreastCancerStageVS  // could be normative answer group LNC#LL240-3 //RMB: technically, not using the normative answer list we are "violating" LOINC, but the right thing to do is to constrain the value set to those terms applicable to breast cancer.
 				TopicCode is LNC#21908-9
 				Focus.StatementTopic is type BreastCancer
 				Focus.CodeableConcept from BreastCancerTypeVS
 1..1			FindingMethod from StagingMethodVS
-0..1			StageTimingPrefix from StageTimingPrefixVS
+1..1			StageTimingPrefix from StageTimingPrefixVS //RMB: in order to be compliant with the AJCC standard, the prefix is mandatory.
 				EvaluationComponent			
 includes 0..1 	BreastCancerTStage
 includes 0..1 	BreastCancerNStage
@@ -113,11 +113,67 @@ includes 0..1 	BreastCancerMStage
 		Description:	"Part of the TNM classification system representing metastases.  The system is used to describe the spread of cancer to other parts of the body."
 		Value:			CodeableConcept from BreastCancerMStageVS
 
+/*RMB: Prognostic stage is very similar to TNM (i.e., anatomic stage). Difference is the stage group is derived from
+		ER, PR, HER2 and grade in addition to TNM. We should probably make TNM its own element.
+		Option 1: making TNM its own data element, and refer to it from BreastCancerStage,
+		where we would have an attribute to indicate whether the stage is prognostic or anatomic.
+		
+		Option 2 (less clumsly but also less reusable): make TNM its own data element, and define BreastCancerAnatomicStage
+		and BreastCancerPrognosticStage as separate data elements, each referring to their key inputs:
+			* BreastCancerAnatomicStage would refer to TNM only
+			* BreastCancerPrognosticStage would refer to TNM, HER2 status, ER status, PR status and grade (nuclear or histologic,
+			depending on the type of tumor).
+		
+		In both cases, the value would come from BreastCancerStageVS. Not sure what we would do with findingMethod, since
+		for PrognosticStage the only viable option would be AJCC 8th edition (but that might change in the future).
+				
+Element:	BreastCancerStage
+Based on:	EvaluationResultRecorded
+Concept:	LNC#21908-9
+Value:		CodeableConcept from BreastCancerStageVS //same for prognostic or anatomic staging
+1..1			FindingMethod from StagingMethodVS
+1..1			
+1..1			StageTimingPrefix from StageTimingPrefixVS
+
+		
+*/
+
+		Element:		StageTimingPrefix
+		Concept:		TBD
+		Description:	"Indicates when the staging was done, in terms of treatment landmarks, either clinical (at diagnosis prior to treatment) (c), pathologic (post-surgical) (p), post-neoadjuvant clinical (yc), or post-neoadjuvant pathologic(yp). The stage timing code is prefix on the N stage. For example, for post-neoadjuvant clinical staging, the N categories are preceded by 'yc' (e.g. ycNX)"
+		Value:			CodeableConcept
+
+		Element:		StageSuffix
+		Concept:		TBD
+		Description:	"Modifies the stage by indicating the size or extent of the cancer or tumor."
+		Value:			CodeableConcept		
+		
+		Element:		BreastCancerTStage
+		Concept:		LNC#59528-0
+		Based on:		EvaluationComponent
+		Description:	"The size and extent of the primary tumor (greatest dimension), based on criteria from the American Joint Committee on Cancer."
+		Value:			CodeableConcept from BreastCancerTStageVS
+
+		Element:		BreastCancerNStage
+		Concept:		LNC#59525-6
+		Based on:		EvaluationComponent
+		Description:	"The presence of metastases in regional lymph nodes. The node category for staging is based on criteria from the American Joint Committee on Cancer."
+		Value:			CodeableConcept from BreastCancerNStageVS
+
+		Element:		BreastCancerMStage
+		Concept:		LNC#59522-3
+		Based on:		EvaluationComponent
+		Description:	"Part of the TNM classification system representing metastases.  The system is used to describe the spread of cancer to other parts of the body."
+		Value:			CodeableConcept from BreastCancerMStageVS
+
+		
 EntryElement:	NuclearGrade
 Concept:		MTH#C18513
 Based on: 		SimplifiedLaboratoryTestResultRecorded
 Description:	"An evaluation of the size and shape of the nucleus in tumor cells and the percentage of tumor cells that are in the process of dividing or growing. Cancers with low nuclear grade grow and spread less quickly than cancers with high nuclear grade."
 Value:			CodeableConcept from NuclearGradeVS
+				Specimen is type BreastSpecimen //RMB: we need the specimen for NuclearGrade
+				//RMB: don't we need TopicCode and DiagnosticService here (similarly to HistologicGrade)
 0..0			EvaluationComponent
 
 EntryElement:	HistologicGrade
@@ -186,6 +242,7 @@ Value:		 	CodeableConcept from PositiveNegativeVS
 				DiagnosticService is #pathology	
 				Specimen is type BreastSpecimen				
 				EvaluationComponent
+
 includes 0..1	NuclearPositivity
 includes 0..1	AverageStainingIntensity
 /*
@@ -199,44 +256,58 @@ includes 0..1	OtherReceptorScoringSystem
 
 EntryElement:	HER2ReceptorStatus
 Based on:		SimplifiedLaboratoryTestResultRecorded
-Concept:		LNC#48676-1
+Concept:		LNC#48676-1 "HER2 [Interpretation] in Tissue"
 Description:	"HER2 receptor status. HER2 is a member of the human epidermal growth factor receptor family of proteins and is encoded by the ERBB2 oncogene. HER2 is overexpressed in 20-30% of breast tumors,10 and is associated with an aggressive clinical course and poor prognosis. HER2 status (positive=present or overexpressed; negative=absent) is a factor in determining prognosis and treatment options."
-Value:		 	CodeableConcept from HER2StatusVS
-				TopicCode is LNC#48676-1 "HER2 Interpretation in Tissue"
+Value:		 	CodeableConcept from PositiveNegativeEquivocalVS
+				TopicCode is LNC#48676-1 "HER2 [Interpretation] in Tissue"
 				Category is OBSCAT#laboratory
 				DiagnosticService is #pathology
 				Specimen is type BreastSpecimen
-				FindingMethod from HER2MethodVS
+				FindingMethod from HER2MethodVS //RMB: feedback from CI group was sometimes a clinician doesn't know if the FISH was single-proble or dual-probe. The overall determination might also be made by reviewing multiple types of assays. We should limit to two options here (ISH or ICH) and ask ballot commenters if we should even refer to a method at this summary level.
+//RMB: we used to refer to HER2ReceptorStatusICH and HER2ReceptorStatusISH here, we should continue to do that
 				
 EntryElement:	HER2ReceptorStatusIHC
 Based on:		HER2ReceptorStatus
-Concept:		LNC#72383-3
+Concept:		SCT#433114000 "Human epidermal growth factor receptor 2 gene detection by immunohistochemistry (procedure)" //RMB: was LNC#72383-3, which implies positive/negative result only as example in LOINC illustrates.
 Description:	"HER2 receptor status as determined by Immunohistochemistry (IHC)."
 				TopicCode is LNC#72383-3 "HER2 Presence in Tissue by Immunoassay"
-				FindingMethod is #ihc
+				FindingMethod is #ihc //RMB: is #ich a local code? This is confusing
 				EvaluationComponent
-includes 0..1	CompleteMembraneStainingPercent
+//RMB Getting cli error here
+//Value:			CodeableConcept from PositiveNegativeEquivocalVS //RMB: NEW. CI group feeback - there might be conflicting results for HER2 by IHC and HER2 by FISH, so we need the status for the specific assay.
+				includes 0..1	HER2byICHScore
+				includes 0..1	CompleteMembraneStainingPercent
+				//RMB TODO: might need additional attributes to make compliant with ACO/CAP guidelines for reporting HER2.
 //includes 0..1	PrimaryAntibody  // from HER2AntibodyIHCVS if covered
+
+		//RMB: New. Feedback from CI group was to separate status from score. 
+		Element:		HER2byICHScore
+		Based on:		EvaluationComponent
+		Concept:		LNC#85319-2 "HER2 [Presence] in Breast cancer specimen by Immune stain"
+		Description:	"Score resulting from HER2 testing by immunohistochemistry"
+		Value:			CodeableConcept from HER2byICHScoreVS
 
 		Element:		CompleteMembraneStainingPercent
 		Based on:		EvaluationComponent
-		Concept:		CAP#25884
+		Concept:		LNC#16112-5 "Cells.HER2 uniform intense membrane staining/100 cells"//RMB: was CAP#25884
 		Description:	"Percentage of cells with uniform intense complete membrane staining."
 		Value:			Quantity with units UCUM#%   // TODO: Percentage causes CLI error
 		
 EntryElement:	HER2ReceptorStatusISH
 Based on:		HER2ReceptorStatus
-Concept:		LNC#72383-3
+Concept:		SCT#434363004 "Human epidermal growth factor receptor 2 gene detection by fluorescence in situ hybridization (procedure)" //RMB: was LNC#72383-3. Too specific a code for the information contained herein.
 Description:	"HER2 receptor status as determined by In Situ Hybridization (ISH)."
 				TopicCode is LNC#72383-3 "HER2 Presence in Tissue by Immunoassay"
 				FindingMethod from HER2ISHMethodVS
 				EvaluationComponent
+//RMB: Getting cli error here
+//Value:			CodeableConcept from PositiveNegativeEquivocalVS //RMB: CI group feeback - there might be conflicting results for HER2 by IHC and HER2 by FISH, so we need the status for the specific assay. 
 includes 0..1	AverageHER2SignalsPerCell
 includes 0..1	AverageCEP17SignalsPerCell
 includes 0..1	HER2toCEP17Ratio
-includes 0..1	Aneusomy
-includes 0..1	HeterogeneousSignals
-includes 0..1	PercentageAmplified
+includes 0..1	Aneusomy				//RMB TODO: still need to check if we need to keep this
+includes 0..1	HeterogeneousSignals	//RMB TODO: still need to check if we need to keep this
+includes 0..1	PercentageAmplified		//RMB TODO: still need to check if we need to keep this
 
 		Element:		AverageHER2SignalsPerCell
 		Based on:		EvaluationComponent

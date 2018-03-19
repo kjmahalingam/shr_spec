@@ -5,8 +5,8 @@ CodeSystem:     SCT = http://snomed.info/sct
 CodeSystem:		HGNC = http://www.genenames.org
 CodeSystem:		MTH = http://ncimeta.nci.nih.gov
 CodeSystem:		REFSEQ = https://www.ncbi.nlm.nih.gov/refseq
-CodeSystem:		ICDO = https://seer.cancer.gov/icd-o-3/
-
+CodeSystem:		ICDO3 = https://seer.cancer.gov/icd-o-3/
+CodeSystem:		LNC = https://loinc.org/ //RMB: is this right? I added a LOINC vs, so I think we need this here.
 
 //TO DO methods of observation, limit to direct visual observation (32750006), palpation (113011001), or imaging procedures (363679005) such as computed tomography (77477000), plain x-ray, MRI (113091000), ultrasonography, etc.
 
@@ -47,6 +47,7 @@ Description:	"The surgical method used to obtain the tissue sample."
 
 ValueSet: 		BreastCancerTypeVS
 Description:	"Histologic types of breast cancer. Codes are drawn from ICD-O-3."
+//RMB: these are technically ICD-O-3 codes, should they be formatted as ICDO#8000?
 #8000	"Neoplasm, malignant"
 #8010	"Carcinoma, NOS"
 #8032	"Spindle cell carcinoma"
@@ -204,14 +205,22 @@ Includes codes descending from SCT#122490001 "Lymphoid system structure (body st
 
 ValueSet:		HER2MethodVS
 Description:	"Value set containing methods of determining HER2 status"
-#single			"HER2 by Single Probe Assay In SituHybridization test" 
-#dual			"HER2 by Dual Probe Assay In SituHybridization test"
+#ish			"HER2 by In Situ Hybridization test"
 #ihc			"HER2 by ImmunoHistochemistry"
 
 ValueSet:		HER2ISHMethodVS
 Description:	"Value set containing In Situ Hybridization methods of determining HER2 status"
 #single			"HER2 by Single Probe Assay In Situ Hybridization test" 
 #dual			"HER2 by Dual Probe Assay In Situ Hybridization test"
+
+//RMB: new value set - not sure if we can refer directly to the answer list or if these "local" codes will break something.
+ValueSet:		HER2byICHScoreVS
+Description:	"Value set containing possible scores resulting from determining HER2 status by immunohistochemistry. Based on LNC#LL4396-9 answer list."
+LNC#LA6111-4	"0"
+LNC#LA11841-6	"1+"
+LNC#LA11842-4	"2+"
+LNC#LA11843-2	"3+"
+LNC#LA11884-6	"Indeterminate"
 
 ValueSet:		DegreeOfLymphaticInvolvementVS
 Description:	"Value set containing the degree of lymphatic involvement."
@@ -242,12 +251,12 @@ Description:	"Antibodies relevant to Estrogen receptor."
 #1294 			"1294 - CAP#32115" 
 #312 			"312 - CAP#32116"
 */
-ValueSet:		HER2StatusVS
+ValueSet:		PositiveNegativeEquivocalVS //RMB: generalized result, since score will be separate attribute. Was HER2StatusVS
+							//RMB TODO: probably want to rename the VS to something more generic
 Description:	"HER2 status overall result"
-#not_amplified 	"Negative/Not Amplified (IHC Score 0) - CAP#31015"
-#negative		"Negative (IHC Score 1+) - CAP#31016 "
-#equivocal 		"Equivocal (IHC Score 2+) - CAP#31017"
-#positive		"Positive/Amplified (IHC Score 3+) - CAP#31018" 
+#negative		"Negative"
+#equivocal 		"Equivocal"
+#positive		"Positive"
 //		"Cannot be determined (indeterminate) - CAP#25883"
 
 /*
