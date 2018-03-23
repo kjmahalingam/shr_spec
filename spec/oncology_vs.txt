@@ -111,6 +111,7 @@ Description:	"The morphologic behavior of the cancer. These are the suffix to th
 #6				"Malignant, metastatic site"
 #9				"Malignant, uncertain whether primary or metastatic site"
 
+//RMB: Since we are fixed to ajcc_v8 we don't need a value set here
 ValueSet:		StagingMethodVS
 Description:	"The methodology or standard used to do the staging."
 //#ajcc_v7		"AJCC Breast Carcinoma Version 7" // not supporting Version 7 as of yet
@@ -118,66 +119,99 @@ Description:	"The methodology or standard used to do the staging."
 
 ValueSet:		StageTimingPrefixVS
 Description:	"When staging was done, relative to treatment events."
-#c				"The concept designated by the symbol c in Version 8 of AJCC's breast cancer staging guide."
-#p				"The concept designated by the symbol p in Version 8 of AJCC's breast cancer staging guide."
-#yc				"The concept designated by the symbol yc in Version 8 of AJCC's breast cancer staging guide."
-#yp				"The concept designated by the symbol yp in Version 8 of AJCC's breast cancer staging guide."
+#c				"The concept designated by the symbol c in Version 8 of AJCC's cancer staging manual, breast chapter."
+#p				"The concept designated by the symbol p in Version 8 of AJCC's cancer staging manual, breast chapter."
+#yc				"The concept designated by the symbol yc in Version 8 of AJCC's cancer staging manual, breast chapter."
+#yp				"The concept designated by the symbol yp in Version 8 of AJCC's cancer staging manual, breast chapter."
+#r				"The concept designated by the symbol r in Version 8 of AJCC's cancer staging manual, breast chapter." 	//RMB: listed in the AJCC staging form, not well covered in the manual.
+#a				"The concept designated by the symbol r in Version 8 of AJCC's cancer staging manual, breast chapter."	//RMB: listed in the AJCC staging form, not well covered in the manual.
 
 ValueSet:		BreastCancerStageVS
 Description:	"Codes that designate concepts describing breast cancer stage group, according to AJCC breast cancer staging recommendations."
-#0				"The concept designated by the symbol 0 in Version 8 of AJCC's breast cancer staging guide."
-#IA				"The concept designated by the symbol IA in Version 8 of AJCC's breast cancer staging guide."
-#IB				"The concept designated by the symbol IB in Version 8 of AJCC's breast cancer staging guide."
-#IIA			"The concept designated by the symbol IIA in Version 8 of AJCC's breast cancer staging guide."
-#IIB			"The concept designated by the symbol IIB in Version 8 of AJCC's breast cancer staging guide."
-#IIIA			"The concept designated by the symbol IIIA in Version 8 of AJCC's breast cancer staging guide."
-#IIIB			"The concept designated by the symbol IIIB in Version 8 of AJCC's breast cancer staging guide."
-#IIIC			"The concept designated by the symbol IIIC in Version 8 of AJCC's breast cancer staging guide."
-#IV				"The concept designated by the symbol IV in Version 8 of AJCC's breast cancer staging guide."
+#0				"The concept designated by the symbol 0 in Version 8 of AJCC's cancer staging manual, breast chapter."
+#IA				"The concept designated by the symbol IA in Version 8 of AJCC's cancer staging manual, breast chapter."
+#IB				"The concept designated by the symbol IB in Version 8 of AJCC's cancer staging manual, breast chapter."
+#IIA			"The concept designated by the symbol IIA in Version 8 of AJCC's cancer staging manual, breast chapter."
+#IIB			"The concept designated by the symbol IIB in Version 8 of AJCC's cancer staging manual, breast chapter."
+#IIIA			"The concept designated by the symbol IIIA in Version 8 of AJCC's cancer staging manual, breast chapter."
+#IIIB			"The concept designated by the symbol IIIB in Version 8 of AJCC's cancer staging manual, breast chapter."
+#IIIC			"The concept designated by the symbol IIIC in Version 8 of AJCC's cancer staging manual, breast chapter."
+#IV				"The concept designated by the symbol IV in Version 8 of AJCC's cancer staging manual, breast chapter."
 
 ValueSet:		BreastCancerTCategoryVS
 Description:	"Codes that designate concepts describing stages for Tumor category according to AJCC breast cancer staging recommendations."
-#TX				"The concept designated by the symbol TX in Version 8 of AJCC's breast cancer staging guide."
-#Tis_DCIS		"The concept designated by the symbol Tis_DCIS in Version 8 of AJCC's breast cancer staging guide."
-#Tis_Paget		"The concept designated by the symbol Tis_Paget in Version 8 of AJCC's breast cancer staging guide."
-#T1				"The concept designated by the symbol T1 in Version 8 of AJCC's breast cancer staging guide."
-#T1mi			"The concept designated by the symbol T1mi in Version 8 of AJCC's breast cancer staging guide."
-#T1a			"The concept designated by the symbol T1a in Version 8 of AJCC's breast cancer staging guide."
-#T1b			"The concept designated by the symbol T1b in Version 8 of AJCC's breast cancer staging guide."
-#T1c			"The concept designated by the symbol T1c in Version 8 of AJCC's breast cancer staging guide."
-#T2				"The concept designated by the symbol T2 in Version 8 of AJCC's breast cancer staging guide."
-#T3				"The concept designated by the symbol T3 in Version 8 of AJCC's breast cancer staging guide."
-#T4				"The concept designated by the symbol T4 in Version 8 of AJCC's breast cancer staging guide."
-#T4a			"The concept designated by the symbol T4a in Version 8 of AJCC's breast cancer staging guide."
-#T4b			"The concept designated by the symbol T4b in Version 8 of AJCC's breast cancer staging guide."
-#T4c			"The concept designated by the symbol T4c in Version 8 of AJCC's breast cancer staging guide."
-#T4d			"The concept designated by the symbol T4d in Version 8 of AJCC's breast cancer staging guide."
+#TX				"The concept designated by the symbol TX in Version 8 of AJCC's cancer staging manual, breast chapter."
+#T0				"The concept designated by the symbol T0 in Version 8 of AJCC's cancer staging manual, breast chapter." //RMB: was missing
+#Tis_DCIS		"The concept designated by the symbol Tis_DCIS in Version 8 of AJCC's cancer staging manual, breast chapter."
+#Tis_Paget		"The concept designated by the symbol Tis_Paget in Version 8 of AJCC's cancer staging manual, breast chapter."
+#T1				"The concept designated by the symbol T1 in Version 8 of AJCC's cancer staging manual, breast chapter."
+#T1mi			"The concept designated by the symbol T1mi in Version 8 of AJCC's cancer staging manual, breast chapter."
+#T1a			"The concept designated by the symbol T1a in Version 8 of AJCC's cancer staging manual, breast chapter."
+#T1b			"The concept designated by the symbol T1b in Version 8 of AJCC's cancer staging manual, breast chapter."
+#T1c			"The concept designated by the symbol T1c in Version 8 of AJCC's cancer staging manual, breast chapter."
+#T2				"The concept designated by the symbol T2 in Version 8 of AJCC's cancer staging manual, breast chapter."
+#T3				"The concept designated by the symbol T3 in Version 8 of AJCC's cancer staging manual, breast chapter."
+#T4				"The concept designated by the symbol T4 in Version 8 of AJCC's cancer staging manual, breast chapter."
+#T4a			"The concept designated by the symbol T4a in Version 8 of AJCC's cancer staging manual, breast chapter."
+#T4b			"The concept designated by the symbol T4b in Version 8 of AJCC's cancer staging manual, breast chapter."
+#T4c			"The concept designated by the symbol T4c in Version 8 of AJCC's cancer staging manual, breast chapter."
+#T4d			"The concept designated by the symbol T4d in Version 8 of AJCC's cancer staging manual, breast chapter."
+
+//RMB: new vs
+ValueSet:		BreastCancerClinicalNCategoryVS
+Description:	"Codes that designate concepts describing breast clinical regional lymph node categories according to AJCC Cancer Staging Manual 8th Edition."
+#cNX			"The concept designated by the symbol cNX in Version 8 of AJCC's cancer staging manual, breast chapter."
+#cN0			"The concept designated by the symbol cN0 in Version 8 of AJCC's cancer staging manual, breast chapter."
+#cN1			"The concept designated by the symbol cN1 in Version 8 of AJCC's cancer staging manual, breast chapter."
+#cN1mi			"The concept designated by the symbol cN1mi in Version 8 of AJCC's cancer staging manual, breast chapter."
+#cN2			"The concept designated by the symbol cN2 in Version 8 of AJCC's cancer staging manual, breast chapter."
+#cN2a			"The concept designated by the symbol cN2a in Version 8 of AJCC's cancer staging manual, breast chapter."
+#cN2b			"The concept designated by the symbol cN2b in Version 8 of AJCC's cancer staging manual, breast chapter."
+#cN3			"The concept designated by the symbol cN3 in Version 8 of AJCC's cancer staging manual, breast chapter."
+#cN3a			"The concept designated by the symbol cN3a in Version 8 of AJCC's cancer staging manual, breast chapter."
+#cN3b			"The concept designated by the symbol cN3b in Version 8 of AJCC's cancer staging manual, breast chapter."
+#cN3c			"The concept designated by the symbol cN3c in Version 8 of AJCC's cancer staging manual, breast chapter."
+
+//RMB: new vs
+ValueSet:		BreastCancerPathologicalNCategoryVS
+Description:	"Codes that designate concepts describing clinical lymph node categories according to AJCC Cancer Staging Manual 8th Edition."
+#pNX			"The concept designated by the symbol pNX in Version 8 of AJCC's cancer staging manual, breast chapter."
+#PN0			"The concept designated by the symbol pN0 in Version 8 of AJCC's cancer staging manual, breast chapter."
+#PN0_i+			"The concept designated by the symbol pN0_i+ in Version 8 of AJCC's cancer staging manual, breast chapter."
+#PN0_mol+		"The concept designated by the symbol pN0_mol+ in Version 8 of AJCC's cancer staging manual, breast chapter."
+#pN1			"The concept designated by the symbol pN1 in Version 8 of AJCC's cancer staging manual, breast chapter."
+#pN1mi			"The concept designated by the symbol pN1mi in Version 8 of AJCC's cancer staging manual, breast chapter."
+#pN1a			"The concept designated by the symbol pN1a in Version 8 of AJCC's cancer staging manual, breast chapter."
+#pN1b			"The concept designated by the symbol pNb in Version 8 of AJCC's cancer staging manual, breast chapter."
+#pN1c			"The concept designated by the symbol pNc in Version 8 of AJCC's cancer staging manual, breast chapter."
+#pN2			"The concept designated by the symbol pN2 in Version 8 of AJCC's cancer staging manual, breast chapter."
+#pN2a			"The concept designated by the symbol pN2a in Version 8 of AJCC's cancer staging manual, breast chapter."
+#pN2b			"The concept designated by the symbol pN2b in Version 8 of AJCC's cancer staging manual, breast chapter."
+#pN3			"The concept designated by the symbol pN3 in Version 8 of AJCC's cancer staging manual, breast chapter."
+#pN3a			"The concept designated by the symbol pN3a in Version 8 of AJCC's cancer staging manual, breast chapter."
+#pN3b			"The concept designated by the symbol pN3b in Version 8 of AJCC's cancer staging manual, breast chapter."
+#pN3c			"The concept designated by the symbol pN3c in Version 8 of AJCC's cancer staging manual, breast chapter."
 
 ValueSet:		BreastCancerNCategoryVS
-Description:	"Codes that designate concepts describing Node category according to AJCC breast cancer staging recommendations."
-#NX				"The concept designated by the symbol NX in Version 8 of AJCC's breast cancer staging guide."
-#N0				"The concept designated by the symbol N0 in Version 8 of AJCC's breast cancer staging guide."
-#N1				"The concept designated by the symbol N1 in Version 8 of AJCC's breast cancer staging guide."
-#N1mi			"The concept designated by the symbol N1mi in Version 8 of AJCC's breast cancer staging guide."
-#N1a			"The concept designated by the symbol N1a in Version 8 of AJCC's breast cancer staging guide."
-#N1b			"The concept designated by the symbol N1b in Version 8 of AJCC's breast cancer staging guide."
-#N1c			"The concept designated by the symbol N1c in Version 8 of AJCC's breast cancer staging guide."
-#N2				"The concept designated by the symbol N2 in Version 8 of AJCC's breast cancer staging guide."
-#N2a			"The concept designated by the symbol N2a in Version 8 of AJCC's breast cancer staging guide."
-#N2b			"The concept designated by the symbol N2b in Version 8 of AJCC's breast cancer staging guide."
-#N3				"The concept designated by the symbol N3 in Version 8 of AJCC's breast cancer staging guide."
-#N3a			"The concept designated by the symbol N3a in Version 8 of AJCC's breast cancer staging guide."
-#N3b			"The concept designated by the symbol N3b in Version 8 of AJCC's breast cancer staging guide."
-#N3c			"The concept designated by the symbol N3c in Version 8 of AJCC's breast cancer staging guide."
-//NX, N0, N1, N2, N2a, N2b, N3, N3a, N3b, N3c (for clinical staging) 
-//NX, N0, N1, N1mi, N1a, N1b, N1c, N2, N2a, N2b, N3 (for pathologic staging)
+//RMB: this value set doesn't actually work as a reference to AJCC codes, because not only is the set of cN codes different from pN codes, sometimes the same code (e.g. cN2 designates metastases in level I, level II axillary lymph nodes or in ipsilateral internal mammary nodes, whereas pN2 designates metastases in 4-9 axillary lymph nodes or positive ipsilateral internal mammary lymph nodes by imaging 
+Description:	"Codes that designate concepts describing breast clinical and pathological regional lymph node categories according to AJCC Cancer Staging Manual 8th Edition."
+Includes codes from BreastCancerClinicalNCategoryVS
+Includes codes from BreastCancerPathologicalNCategoryVS
 
+//RMB: new vs to support suffix post-coordination for N category
+ValueSet:		BreastCancerNCategorySuffixVS
+Description:	"Codes that designate concepts describing N category suffixes according to AJCC breast cancer staging recommendations."
+#sn				"The concept designated by the symbol (sn) in Version 8 of AJCC's cancer staging manual, breast chapter."
+#f				"The concept designated by the symbol (f) in Version 8 of AJCC's cancer staging manual, breast chapter."
+
+//RMB: changed the categories to match the AJCC table for M category.
 ValueSet:		BreastCancerMCategoryVS
 Description:	"Codes that designate concepts describing Metastases category according to AJCC breast cancer staging recommendations."
-#MX				"The concept designated by the symbol MX in Version 8 of AJCC's breast cancer staging guide."
-#M0				"The concept designated by the symbol M0 in Version 8 of AJCC's breast cancer staging guide."
-#M1				"The concept designated by the symbol M1 in Version 8 of AJCC's breast cancer staging guide."
 
+//RMB: MX category does not exist in AJCC manual		#MX	"The concept designated by the symbol MX in Version 8 of AJCC's cancer staging manual, breast chapter."
+#M0				"The concept designated by the symbol M0 in Version 8 of AJCC's cancer staging manual, breast chapter." //RMB: I think there's a typo in the AJCC manual where we should see cM0 instead of M0. Based on the description, there's no pathological information into making an M0 determination. In addition, the CAP form only has one option for M category, and that is pM1, which further supports my theory. We should ask Laura Vega about this.
+#cM1			"The concept designated by the symbol cM1 in Version 8 of AJCC's cancer staging manual, breast chapter."
+#pM1			"The concept designated by the symbol pM1 in Version 8 of AJCC's cancer staging manual, breast chapter."
 
 ValueSet:		StainingIntensityVS
 Description:	"Part of the Allred scoring, based on the intensity of that staining, on a scale of 0 (Negative) to 3 (Strong)."

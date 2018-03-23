@@ -72,51 +72,61 @@ Based on:		EvaluationResultRecorded  // maps to FHIR Observation
 Concept:		LNC#21908-9
 Description:	"The prognostic stage of a breast cancer, assessed according to the standard established by American Joint Committee on Cancer (AJCC). Only the prognostic stage is used in US and Canada."
 Value:			CodeableConcept from BreastCancerStageVS 
-1..1			FindingMethod from StagingMethodVS
-1..1			StageTimingPrefix from StageTimingPrefixVS
+1..1			FindingMethod is #ajcc_v8	"AJCC Breast Carcinoma Version 8"	//RMB: was from StagingMethodVS
+1..1			StageTimingPrefix from StageTimingPrefixVS //RMB: while not evident in the AJCC manual, the companion staging form designates two possible prognostic stagings: clinical or pathological. They list timings for TNM staging separately. Suggest turning this into two option vs: clinical prognostic stage, pathological prognostic stage
 				EvaluationComponent	
 //RMB: the prognostic stage cannot be determined without TNM. Don't understand why the TNM categories are optional. Either TNM and the biomarkers are all optional, or they're all required.				
 includes 0..1 	BreastCancerTCategory
 includes 0..1 	BreastCancerNCategory
 includes 0..1 	BreastCancerMCategory
-				Members.EvaluationResultTopic
+				Members.EvaluationResultTopic //RMB: what is this?
 includes 1..1	HER2ReceptorStatus
 includes 1..1	EstrogenReceptorStatus
 includes 1..1	ProgesteroneReceptorStatus
 includes 0..1	NuclearGrade
 includes 0..1	HistologicGrade	
 
-		Element:		StageTimingPrefix
-		Concept:		TBD
+		Element:		StageTimingPrefix //RMB: Despite the additional precoordination modifications, the AJCC staging form 
+		Concept:		SCT#260869008 "Timing of stage"
 		Description:	"Mandatory element indicating when the staging was done, in terms of treatment landmarks, either clinical (at diagnosis prior to treatment) (c), pathologic (post-surgical) (p), post-neoadjuvant clinical (yc), or post-neoadjuvant pathologic(yp). The stage timing code is prefix on the N stage. For example, for post-neoadjuvant clinical staging, the N categories are preceded by 'yc' (e.g. ycNX)"
-		Value:			CodeableConcept	
+		Value:			CodeableConcept	from StageTimingPrefixVS
 		
 		Element:		BreastCancerTCategory
-		Concept:		LNC#59528-0
+		Concept:		SCT#78873005 "T category"	//RMB: was LNC#78873005, which is specific to AJCC 7th edition
 		Based on:		EvaluationComponent
 		Description:	"The size and extent of the primary tumor (greatest dimension), based on criteria from the American Joint Committee on Cancer."
 		Value:			CodeableConcept from BreastCancerTCategoryVS
+		0..1			CodeableConcept is #m_suffix "The concept designated by the symbol (m) in Version 8 of AJCC's cancer staging manual, breast chapter." //RMB: New. the AJCC staging form indicates (m) as a possible suffix for the T category when there are multiple primary tumors in the same organ.
 		0..0			ReferenceRange
 
 		Element:		BreastCancerNCategory
-		Concept:		LNC#59525-6
+		Concept:		SCT#277206009 "N category"	//RMB: was LNC#59525-6, which is specific to AJCC 7th edition
 		Based on:		EvaluationComponent
 		Description:	"The presence of metastases in regional lymph nodes. The node category for staging is based on criteria from the American Joint Committee on Cancer."
 		Value:			CodeableConcept from BreastCancerNCategoryVS
 		0..0			ReferenceRange
-
+		//0..1			BreastCancerNCategorySuffix //RMB: the suffixes (sn) or (f) can be used for N category (and only N category, regardless of timing (clinical or pathological)
+		
+				/*RMB: New but syntax doesn't seem right, perhaps because it's a sub-element of a sub-element?
+				/Element:	BreastCancerNCategorySuffix
+				Concept:	TBD	
+				Based on:	EvaluationComponent
+				Description: "Suffix that can be used in conjuction with breast cancer N category to designate how lymph node specimens were obtained. The suffixes are based on criteria from the American Joint Committee on Cancer."
+				Value: CodeableConcept from BreastCancerNCategorySuffixVS
+				0..0	ReferenceRange
+				*/
+				
 		Element:		BreastCancerMCategory
-		Concept:		LNC#59522-3
+		Concept:		SCT#126926005 "M category"	//RMB: was LNC#59522-3, which is specific to AJCC 7th edition
 		Based on:		EvaluationComponent
-		Description:	"Part of the TNM classification system representing metastases.  The system is used to describe the spread of cancer to other parts of the body."
+		Description:	"Part of the TNM classification system representing metastases. The system is used to describe the spread of cancer to other parts of the body."
 		Value:			CodeableConcept from BreastCancerMCategoryVS
 		0..0			ReferenceRange
 
 EntryElement:	NuclearGrade
 Concept:		MTH#C18513
 Based on: 		SimplifiedLaboratoryTestResultRecorded
-Description:	"An evaluation of the size and shape of the nucleus in tumor cells and the percentage of tumor cells that are in the process of dividing or growing. Cancers with low nuclear grade grow and spread less quickly than cancers with high nuclear grade."
-Value:			CodeableConcept from NuclearGradeVS
+Description:	"An evaluation of the size and shape of the nucleus in tumor cells and the percentage of tumor cells that are in the process of dividing or growing. Cancers with low nuclear grade grow and spread less quickly than cancers with high nuclear grade."Value:			CodeableConcept from NuclearGradeVS
 				Specimen is type BreastSpecimen
 				TopicCode is MTH#C18513
 0..0			EvaluationComponent
@@ -262,9 +272,9 @@ Description:	"HER2 receptor status as determined by In Situ Hybridization (ISH).
 includes 0..1	AverageHER2SignalsPerCell
 includes 0..1	AverageCEP17SignalsPerCell
 includes 0..1	HER2toCEP17Ratio
-includes 0..1	Aneusomy
-includes 0..1	HeterogeneousSignals
-includes 0..1	PercentageAmplified
+// includes 0..1	Aneusomy				//RMB: May suggest this info isn't critical, and it's optional in the CAP report, so inclined to remove for now. No response from Eric yet.
+// includes 0..1	HeterogeneousSignals	//RMB: May suggest this info isn't critical, and it's optional in the CAP report, so inclined to remove for now. No response from Eric yet.
+// includes 0..1	PercentageAmplified		//RMB: May suggest this info isn't critical, and it's optional in the CAP report, so inclined to remove for now. No response from Eric yet.
 
 		Element:		AverageHER2SignalsPerCell
 		Based on:		EvaluationComponent
@@ -287,16 +297,14 @@ includes 0..1	PercentageAmplified
 		Value:			Quantity
 		0..0			ReferenceRange
 		
-		/*RMB: this is an optional item in the CAP form and it's ill-defined. Never discussed with TT or CIG.
+		/*RMB: see comments above.
 		Element:		Aneusomy
 		Based on:		EvaluationComponent
 		Concept:		CAP#30478
 		Description:	"Aneusomy (as defined by vendor kit used)"
 		Value:			CodeableConcept from YesNoVS
 		0..0			ReferenceRange
-		*/
 		
-		//RMB: this is also optional in the CAP form, but I seem to remember Eric mentioning heterogeneity and % amplified and important context for clinical decision making. I've reached out to him to confirm, but would keep for now. This was never *really* discussed with CI or TT.
 		Element:		HeterogeneousSignals
 		Based on:		EvaluationComponent
 		Concept:		CAP#30482 
@@ -310,7 +318,7 @@ includes 0..1	PercentageAmplified
 		Description:	"Percentage of cells with amplified HER2 signals"
 		Value:			Quantity with units UCUM#%
 		0..0			ReferenceRange
-
+		*/
 		
 EntryElement:	OncotypeDxInvasiveRecurrenceScore
 Based on:		SimplifiedLaboratoryTestResultRecorded
