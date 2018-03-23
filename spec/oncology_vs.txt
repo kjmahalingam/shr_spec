@@ -36,7 +36,7 @@ Description:	"The type of specimen obtained from the breast."
 #wire			"Excision specimen with wire loc"
 #duct			"Nipple duct excision"
 #mastectomy		"Total mastectomy"
-#lymph			"Sentinel lymph node biopsy"
+// #lymph			"Sentinel lymph node biopsy" //RMB: I don't think this belongs here. There are specific lymph node specimens (not just sentinel) and we should specialize them.
 
 ValueSet:		BreastSpecimenCollectionMethodVS
 Description:	"The surgical method used to obtain the tissue sample."
@@ -258,13 +258,19 @@ SCT#384735004	"Nuclear pleomorphism: small regular nuclei (score=1)"
 SCT#384737007	"Nuclear pleomorphism: moderate increase in size, etc (score = 2)"
 SCT#384738002	"Nuclear pleomorphism: marked variation in size, nucleoli, chromatin clumping, etc (score = 3)"
 
+//RMB: New. The scores should be consistent with what we presented for TubuleFormationScore and NuclearPleomorphismScoreVS. I based the value set on CAP's form options.
+ValueSet:		MitoticCountScoreVS
+Description:	"Value set containing the scores for Nottingham Histologic Score Mitotic Rate"
+#score_1		"<= 3 mitoses per mm2"
+#score_2		">=4 and <=7 mitoses per mm2"
+#score_3		">= 8 mitoses per mm2"
 
+//RMB: will FHIR create separate code systems for each of these RiskScoreInterpretationVS even though they all have the same codes? Isn't it a problem that we are using the same local codes with different descriptions?
 ValueSet:		OncotypeDxInvasiveRiskScoreInterpretationVS
 Description:	"Intepretation of OncotypeDX Recurrence Score for invasive cancers."
 #low_risk		"Recurrence Score lower than 18: The cancer has a low risk of recurrence. The benefit of chemotherapy is likely to be small and will not outweigh the risks of side effects."
 #intermediate_risk		"Recurrence Score of 18 up to and including 30: The cancer has an intermediate risk of recurrence. It’s unclear whether the benefits of chemotherapy outweigh the risks of side effects."
 #high_risk		"Recurrence Score greater than or equal to 31: The cancer has a high risk of recurrence, and the benefits of chemotherapy are likely to be greater than the risks of side effects."
-
 
 ValueSet:		OncotypeDxDCISRiskScoreInterpretationVS
 Description:	"Intepretation of OncotypeDX DCIS (Ductal Carcinoma In Situ) Recurrence Score"

@@ -41,11 +41,13 @@ Description:	"Specimen resulting from biopsy or excision of breast and surroundi
 		NOTE: In CIMI Version 0.0.4, processing of a specimen is represented as an independent clinical statement involving a SpecimenProcessingTopic and PerformanceContext. The CIMI clinical statement would be mapped to FHIR as a Procedure. In this case, the procedure involves chilling the specimen (the key or code) and the duration of that procedure (corresponding to PerformanceContext.duration) would be interpreted as the cold ischemic time. The drawback of this would be that the information on cold ischemic time (necessary for interpreting results) would not travel with the specimen. To provide a cutpoint between this IG and the rest of CIMI, and to avoid unnecessary complexity, an extension was introduced."
 		Value:			Quantity with units UCUM#min
 
+/*RMB: I did more analysis on this, but I'm not confident I have this right - at all - so I'd rather leave this out of the ballot.
 EntryElement:	BreastRegionalLymphNodeSpecimen
 Based on:		BreastSpecimen
 Concept:		TBD
 Description:	"The removal of regional lymph node(s) at the time of surgery of the primary site or during a separate surgical event. This model is yet to be determined."
 // To be determined
+*/
 
 EntryElement:	BreastCancerPresenceStatement
 Concept:		SCT#126926005 "Neoplasm of the breast"
@@ -72,7 +74,8 @@ Description:	"The prognostic stage of a breast cancer, assessed according to the
 Value:			CodeableConcept from BreastCancerStageVS 
 1..1			FindingMethod from StagingMethodVS
 1..1			StageTimingPrefix from StageTimingPrefixVS
-				EvaluationComponent			
+				EvaluationComponent	
+//RMB: the prognostic stage cannot be determined without TNM. Don't understand why the TNM categories are optional. Either TNM and the biomarkers are all optional, or they're all required.				
 includes 0..1 	BreastCancerTCategory
 includes 0..1 	BreastCancerNCategory
 includes 0..1 	BreastCancerMCategory
@@ -131,6 +134,7 @@ includes 0..1 	TubuleFormationScore
 includes 0..1 	NuclearPleomorphismScore
 includes 0..1 	MitoticCountScore
 
+//RMB: the CAP form has two additional options for each of these subcomponents: "only microinvasion present" and "no residual invasive carcinoma", both of which are situations where a histologic grade wouldn't be assigned. Because the our exceptions value set doesn't handle these options (and possibly others related to other data elements, should we allow for a string option to contain reasons for missing data? Otherwise the expection value set might become unruly.
 			Element:		TubuleFormationScore
 			Concept:		SCT#371470008
 			Based on:		EvaluationComponent
@@ -139,7 +143,7 @@ includes 0..1 	MitoticCountScore
 			0..0			ReferenceRange
 
 			Element:		NuclearPleomorphismScore
-			Concept:		TBD
+			Concept:		SCT#371471007
 			Based on:		EvaluationComponent
 			Description:	"How large and varied the nuclei of the tumor cells are. Scored 1 to 3, with 3 being the most pleomorphism."
 			Value:			CodeableConcept from NuclearPleomorphismScoreVS
@@ -149,7 +153,7 @@ includes 0..1 	MitoticCountScore
 			Concept:		SCT#371472000
 			Based on:		EvaluationComponent
 			Description:	"How fast the tumor cells are growing and dividing, determined from the number of mitotic cells present. Scored 1 to 3, with 3 being the most mitotic cells."
-			Value:			Quantity   // 1 to 3
+			Value:			CodeableConcept from MitoticCountScoreVS   // 1 to 3 //RMB: this shouldn't be different from TubuleFormationScore and NuclearPleomorphismScore. They have the same scoring mechanism. Suggest using local codes.
 			0..0			ReferenceRange
 
 //			includes 0..1	PercentageInSituCarcinoma   // not sure where this belongs
@@ -161,13 +165,13 @@ Concept:		LNC#16112-5 "Estrogen receptor [Interpretation] in Tissue"
 Description:	"Estrogen receptor alpha is the predominant estrogen receptor expressed in breast tissue and is overexpressed in around 50% of breast carcinomas. ER status (positive=present or overexpressed; negative=absent) is a factor in determining prognosis and treatment options.
 
 We are seeking feedback if it is better to put the positive/negative status in Value or Interpretation. The point of view expressed in this model is that positive/negative designation is an interpretation, based on evidence such as NuclearPositivity and AverageStainingIntensity, not a direct result. This also appears to be the most consistent approach across all receptor statuses (ER, PR, and HER2)."
-Value:			PercentageRange
+Value:			PercentageRange	//RMB: we need to be able to communicate this can be an exact %.
 				Interpretation from PositiveNegativeVS
 				TopicCode is LNC#16112-5
 				DiagnosticService is #pathology	
 				Specimen is type BreastSpecimen				
 				EvaluationComponent
-//includes 0..1	NuclearPositivity
+//includes 0..1	NuclearPositivity //RMB: I see that you moved NuclearPositivity to the Value. That being the case we should name the element EstrogenReceptorNuclearPositivity, otherwise people will be lost as to what the value attribute contains. In my HO, I would maintain the old structure, because the status is based on more than just NuclearPositivity. I know you did this for consistency with HER2, but it makes these elements really confusing.
 includes 0..1	AverageStainingIntensity
 
 
@@ -185,7 +189,7 @@ Value:			PercentageRange
 				DiagnosticService is #pathology	
 				Specimen is type BreastSpecimen				
 				EvaluationComponent
-//includes 0..1	NuclearPositivity
+//includes 0..1	NuclearPositivity //RMB: see comment for ERStatus.
 includes 0..1	AverageStainingIntensity
 
 /*
@@ -253,6 +257,8 @@ Description:	"HER2 receptor status as determined by In Situ Hybridization (ISH).
 				FindingMethod from HER2ISHMethodVS
 				Interpretation from PositiveNegativeEquivocalVS
 				EvaluationComponent
+/*RMB: since HER2byISH doesn't have a score like ICH, we should zero out Value:
+0..0 			Value */
 includes 0..1	AverageHER2SignalsPerCell
 includes 0..1	AverageCEP17SignalsPerCell
 includes 0..1	HER2toCEP17Ratio
@@ -281,13 +287,16 @@ includes 0..1	PercentageAmplified
 		Value:			Quantity
 		0..0			ReferenceRange
 		
+		/*RMB: this is an optional item in the CAP form and it's ill-defined. Never discussed with TT or CIG.
 		Element:		Aneusomy
 		Based on:		EvaluationComponent
 		Concept:		CAP#30478
 		Description:	"Aneusomy (as defined by vendor kit used)"
 		Value:			CodeableConcept from YesNoVS
 		0..0			ReferenceRange
-	
+		*/
+		
+		//RMB: this is also optional in the CAP form, but I seem to remember Eric mentioning heterogeneity and % amplified and important context for clinical decision making. I've reached out to him to confirm, but would keep for now. This was never *really* discussed with CI or TT.
 		Element:		HeterogeneousSignals
 		Based on:		EvaluationComponent
 		Concept:		CAP#30482 
@@ -357,6 +366,7 @@ Value: 			Quantity
 				Specimen is type BreastSpecimen				 
 0..0			EvaluationComponent
 	
+/* RMB: Haven't heard back from Travis. I think this goes in the same bucket as LymphNodeInvolvement. Not discussed with TT or CI group, and not ready for ballot. 
 EntryElement: 	TumorDimensions
 Based on:		LaboratoryTestResultRecorded   /// Imaging???
 Concept:		MTH#C4086369
@@ -391,8 +401,9 @@ includes 0..1	SizeOfGrossTumorBed
 		Description:	"The largest dimension of the gross tumor bed/fibrotic area."
 		Value:			Quantity with units UCUM#mm
 		0..0			ReferenceRange
+*/
 
-
+/* RMB: removing since element was not prioritized in staging analysis, and was never discussed with TT or CIG.
 EntryElement: 	TumorMargins
 Based on:		SimplifiedLaboratoryTestResultRecorded
 Concept:		MTH#C4086369
@@ -427,8 +438,9 @@ includes 0..1	PercentageInSituCarcinoma   // not sure this belongs here
 		Description:	"The percentage of the cancer that is in situ, as opposed to invading other tissues."
 		Value:			Quantity with units UCUM#%
 		0..0			ReferenceRange
+*/
 
-	
+/* RMB: I say we remove this for the ballot given the many unknowns related to BreastRegionalLymphNodeSpecimen. There is little value in the data structure as it currently stands to trully support staging.	
 EntryElement:	LymphaticInvolvement
 Based on:		LaboratoryTestResultRecorded
 Concept:		MTH#C0746333
@@ -468,8 +480,9 @@ includes 0..1 	DegreeOfLymphaticInvolvement
 		Description:	"Assessment of how much cancer is in a lymph node."
 		Value:			CodeableConcept from DegreeOfLymphaticInvolvementVS
 		0..0			ReferenceRange
+*/
 
-
+/* Out of scope for ballot - not discussed with TT or CI group.
 	Element: 		Ki-67LabelingIndex
 	Based on:		SimplifiedLaboratoryTestResultRecorded		
 	Concept:		LNC#33055-5
@@ -488,6 +501,7 @@ includes 0..1 	DegreeOfLymphaticInvolvement
 					TopicCode is LNC#30913-8
 					DiagnosticService is #pathology
 	0..0			EvaluationComponent				
+*/
 					
 /*  Out of scope for ballot
 EntryElement:	GeneticVariant
