@@ -19,10 +19,11 @@ Description:	"Topography of the breast. Codes are drawn from ICD-O-3."
 #C50.9			"Breast, not otherwise specified (NOS)"
 
 ValueSet:       LeftRightLateralityVS
-Concept:        NCI#C99073 "Anatomical laterality"
-Description:    "Simplified set of laterality codes indicating detailing the side(s) of interest. Codes are from NCI"
-#C25229 		"LEFT Being or located on or directed toward the side of the body to the west when facing north."
-#C25228 		"RIGHT Being or located on or directed toward the side of the body to the east when facing north."
+Concept:        SCT#272741003 "Laterality (attribute)" //RMB: NCI is not a defined code system. Was: NCI#C99073 "Anatomical laterality"
+Description:    "Simplified set of laterality codes indicating detailing the side(s) of interest. This is a subset of the FHIR body site laterality value set (http://hl7.org/implement/standards/fhir/2015Jan/valueset-bodysite-laterality.html)"
+//RMB: replaced NCI with SNOMED-CT codes to align with FHIR laterality value set. 
+SCT#419161000	"Unilateral left"	//RMB: was: #C25229 		"LEFT Being or located on or directed toward the side of the body to the west when facing north."
+SCT#419465000	"Unilateral right"	//RMB: was: #C25228 		"RIGHT Being or located on or directed toward the side of the body to the east when facing north."
 
 ValueSet:		BreastSpecimenTypeVS
 Description:	"The type of specimen obtained from the breast."
@@ -105,18 +106,23 @@ Description:	"The morphologic behavior of the cancer. These are the suffix to th
 #9				"Malignant, uncertain whether primary or metastatic site"
 
 ValueSet:		StagingMethodVS
-Description:	"The methodology or standard used to do the staging."
-#ajcc_v8		"AJCC Breast Carcinoma Version 8"
+Description:	"The methodology or standard used to assign the cancer's overall stage."
+#ajcc_v7		"AJCC Cancer Staging Manual 7th Edition"
+#ajcc_v8		"AJCC Cancer Staging Manual 8th Edition"
+#seer_eod		"SEER Extent of Disease 2018"
+#seer_ss77		"SEER Summary Stage 1977"
+#seer_ss00		"SEER Summary Stage 2000"
+#seer_ss18		"SEER Summary Stage 2018"
 
 ValueSet:		StageTimingPrefixVS
 Description:	"When staging was done, relative to treatment events."
-#c				"The concept designated by the symbol c in Version 8 of AJCC's cancer staging manual, breast chapter."
-#p				"The concept designated by the symbol p in Version 8 of AJCC's cancer staging manual, breast chapter."
-#yc				"The concept designated by the symbol yc in Version 8 of AJCC's cancer staging manual, breast chapter."
-#yp				"The concept designated by the symbol yp in Version 8 of AJCC's cancer staging manual, breast chapter."
-#r				"The concept designated by the symbol r in Version 8 of AJCC's cancer staging manual, breast chapter." 	//RMB: listed in the AJCC staging form, not well covered in the manual.
-#a				"The concept designated by the symbol r in Version 8 of AJCC's cancer staging manual, breast chapter."	//RMB: listed in the AJCC staging form, not well covered in the manual.
+//RMB: replaced codes. TODO: update descriptions to what they were before we were directly using AJCC content.
+#cli			"The concept designated by the symbol c in Version 8 of AJCC's cancer staging manual, breast chapter."
+#path			"The concept designated by the symbol p in Version 8 of AJCC's cancer staging manual, breast chapter."
+#postther_cli	"The concept designated by the symbol yc in Version 8 of AJCC's cancer staging manual, breast chapter."
+#postther_path	"The concept designated by the symbol yp in Version 8 of AJCC's cancer staging manual, breast chapter."
 
+/* RMB: removing AJCC-specific content
 ValueSet:		BreastCancerStageVS
 Description:	"Codes that designate concepts describing breast cancer stage group, according to AJCC breast cancer staging recommendations."
 #0				"The concept designated by the symbol 0 in Version 8 of AJCC's cancer staging manual, breast chapter."
@@ -178,7 +184,6 @@ Description:	"Codes that designate concepts describing breast clinical lymph nod
 #pN3b			"The concept designated by the symbol pN3b in Version 8 of AJCC's cancer staging manual, breast chapter."
 #pN3c			"The concept designated by the symbol pN3c in Version 8 of AJCC's cancer staging manual, breast chapter."
 
-
 ValueSet:		BreastCancerTCategorySuffixVS
 Description:	"Codes that designate concepts describing T-category suffixes according to AJCC breast cancer staging recommendations."
 #m				"The concept designated by the symbol m in Version 8 of AJCC's cancer staging manual, breast chapter."
@@ -194,6 +199,7 @@ Description:	"Codes that designate concepts describing Metastases category accor
 #M0				"The concept designated by the symbol M0 in Version 8 of AJCC's cancer staging manual, breast chapter." 
 #cM1			"The concept designated by the symbol cM1 in Version 8 of AJCC's cancer staging manual, breast chapter."
 #pM1			"The concept designated by the symbol pM1 in Version 8 of AJCC's cancer staging manual, breast chapter."
+*/
 
 ValueSet:		StainingIntensityVS
 Description:	"Part of the Allred scoring, based on the intensity of that staining, on a scale of 0 (Negative) to 3 (Strong)."
@@ -201,7 +207,6 @@ Description:	"Part of the Allred scoring, based on the intensity of that stainin
 #weak			"Weak"
 #moderate		"Moderate"
 #strong			"Strong"
-
 
 ValueSet:		NottinghamCombinedGradeVS
 Description:	""
@@ -215,9 +220,11 @@ Description:	"The nuclear grade describes how closely the nuclei of cancer cells
 #G2 			"Grade II - Intermediate/moderate grade or moderately differentiated"
 #G3 			"Grade III - High grade or pooly differentiated"
 
+/* RMB: value set not currently used
 ValueSet:		LymphSystemSubdivisionVS
 Description:	"A lymph node area or nodal group; a subdivision of the entire lymphatic system. For breast cancer, this includes 5 areas: internal mammary lymph nodes, axillary lymph nodes level I, II, and III, and the supraclavicular lymph nodes."
 Includes codes descending from SCT#122490001 "Lymphoid system structure (body structure)"
+*/
 
 ValueSet:		HER2ISHMethodVS
 Description:	"Value set containing In Situ Hybridization methods of determining HER2 status"
@@ -236,12 +243,13 @@ LNC#LA11842-4	"2+"
 LNC#LA11843-2	"3+"
 LNC#LA11884-6	"Indeterminate"
 
-
+/* RMB: value set not currently used
 ValueSet:		DegreeOfLymphaticInvolvementVS
 Description:	"Value set containing the degree of lymphatic involvement."
 #microscopic	"Only a few cancer cells are in the node."
 #gross			"The cancer can be seen or felt without aid of microscopy."
 #extracapsular	"Cancer has spread outside the wall of the node."
+*/
 
 ValueSet:		HER2StatusVS
 Description:	"HER2 status overall result"
@@ -250,6 +258,7 @@ Description:	"HER2 status overall result"
 #equivocal 		"Equivocal (IHC Score 2+)"
 #positive		"Positive/Amplified (IHC Score 3+)" 
 
+/* RMB: Value set not currently used
 ValueSet:		TumorMarginDescriptionVS
 Description:	"Value set containing the descriptions of tumor margin."
 SCT#129738007	"Lesion with circumscribed margin"
@@ -259,7 +268,7 @@ SCT#129740002	"Lesion with obscured margin"
 SCT#129742005	"Lesion with spiculated margin"
 // TODO: Add codes for additional tumor margin descriptions (from Penrad)
 // Angular margin, Smooth margin, Intraductal extension, Irregular margin, Lobulated margin, Macrolobulated margin, Non circumscribed margin
-
+*/
 
 ValueSet:		TubuleFormationScoreVS
 Description:	"Value set containing the extent (scope) of tubule formation."
@@ -297,16 +306,16 @@ Description:	"Intepretation of Mammaprint Recurrence Score"
 #high_risk		"Score between -1.0 and 0.0, meaning a patient has a 29% chance that her cancer will recur within 10 years without any additional adjuvant treatment, either hormonal therapy or chemotherapy.Recurrence Score greater than or equal to 55: The cancer has a high risk of recurrence, and the benefits of chemotherapy are likely to be greater than the risks of side effects."
 
 
-ValueSet:			RecurrenceRiskScoreInterpretationVS
-Description:		"Interpretations of risk as high, intermediate, or low. Answer set taken from LOINC LL3198-0" 
-#LA19541-4   	 	"High risk of recurrence."  	 		 
-#LA22380-2		 	"Intermediate risk of recurrence."  	 	 
-#LA19542-2	 		"Low risk of recurrence."
+ValueSet:		RecurrenceRiskScoreInterpretationVS
+Description:	"Interpretations of risk as high, intermediate, or low. Answer set taken from LOINC LL3198-0" 
+#LA19541-4   	"High risk of recurrence."  	 		 
+#LA22380-2		"Intermediate risk of recurrence."  	 	 
+#LA19542-2	 	"Low risk of recurrence."
 
-ValueSet:			PositiveNegativeVS
-Description:		"Value set containing the values positive and negative."
-MTH#C1446409		"Positive"
-MTH#C0205160		"Negative"
+ValueSet:		PositiveNegativeVS
+Description:	"Value set containing the values positive and negative."
+MTH#C1446409	"Positive"
+MTH#C0205160	"Negative"
 
 ValueSet:		PositiveNegativeEquivocalVS
 Description:	"Interpretation of a test result as positive, negative or equivocal."
@@ -314,10 +323,7 @@ Description:	"Interpretation of a test result as positive, negative or equivocal
 #equivocal 		"Equivocal"
 #positive		"Positive"
 
-
-
 /*
-
 ValueSet:		StainingControlVS
 Description:	"Staining of control cells, required if staining is negative."
 #staining 		"Internal control cells present and stain as expected"
@@ -347,7 +353,6 @@ Description:	"Antibodies relevant to Estrogen receptor."
 #1294 			"1294" 
 #312 			"312"
 
-
 ValueSet:		HER2AntibodyIHCVS
 Description:	"Antibodies relevant to HER2 receptor (IHC Test)."
 #4B5			"4B5"
@@ -355,7 +360,6 @@ Description:	"Antibodies relevant to HER2 receptor (IHC Test)."
 #A0485	 		"A0485" 
 #SP3 			"SP3"
 #CB11 			"CB11"
-
 
 ValueSet:		Ki67AntibodyVS
 Description:	"Antibodies relevant to Ki-67 Text."
