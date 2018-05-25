@@ -8,6 +8,5 @@ before_install:
   - git clone https://github.com/standardhealth/shr-cli.git
   - cd shr-cli/
   - yarn
-  - cd ../
 script:
   - node . ../spec/
