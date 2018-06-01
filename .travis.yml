@@ -9,4 +9,8 @@ before_install:
   - cd shr-cli/
   - yarn
 script:
-  - node . ../spec/
+  - node . ../spec/ > run.log
+  - cat run.log
+  - errors=$(grep "0 errors" run.log)
+  - [ "$(errors)" != "0 errors" ] && ( echo There were errors in running shr-cli. ; exit 1 )
+  
